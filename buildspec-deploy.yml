@@ -1,4 +1,4 @@
-﻿version: 0.2
+version: 0.2
 # Variables de entorno del proyecto CodeBuild: AWS_DEFAULT_REGION, EKS_CLUSTER
 phases:
   install:

@@ -1,4 +1,4 @@
-﻿version: 0.2
+version: 0.2
 # Variables de entorno del proyecto CodeBuild: AWS_ACCOUNT_ID, AWS_DEFAULT_REGION, ECR_REPO
 phases:
   pre_build:
