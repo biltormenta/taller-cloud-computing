@@ -1,0 +1,18 @@
+﻿version: 0.2
+# Variables de entorno del proyecto CodeBuild: AWS_ACCOUNT_ID, AWS_DEFAULT_REGION, ECR_REPO
+phases:
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c1-8)
+      - IMAGE_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO:$TAG
+  build:
+    commands:
+      - docker build -t $IMAGE_URI .
+      - docker push $IMAGE_URI
+  post_build:
+    commands:
+      - sed -i "s|IMAGE_URI|$IMAGE_URI|g" k8s/app.yaml
+artifacts:
+  files:
+    - k8s/app.yaml

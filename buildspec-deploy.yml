@@ -1,0 +1,13 @@
+﻿version: 0.2
+# Variables de entorno del proyecto CodeBuild: AWS_DEFAULT_REGION, EKS_CLUSTER
+phases:
+  install:
+    commands:
+      - curl -sLo kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.31.0/2024-09-12/bin/linux/amd64/kubectl
+      - chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
+  build:
+    commands:
+      - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER
+      - kubectl apply -f k8s/app.yaml
+      - kubectl rollout status deployment/web --timeout=180s
+      - kubectl get svc web-service
