@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: web
-          image: IMAGE_URI
+          image: 389357515009.dkr.ecr.us-east-1.amazonaws.com/taller-eks:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           resources:
